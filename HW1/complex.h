@@ -1,18 +1,18 @@
 #pragma once
 
-struct complex 
+struct complex
 {
-	int a, b;
+        double a, b;
 
-	complex(int a, int b);
+        complex(double a, double b);
 
-	complex();
+        complex();
 
-	int abs();
+        double abs();
 
-	complex& operator+(complex& operand);
+        complex& operator+(complex& operand);
 
-	complex& operator-(complex& operand);
+        complex& operator-(complex& operand);
 
-	complex& operator*(int constant);
+        complex& operator*(int constant);
 };
