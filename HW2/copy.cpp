@@ -32,13 +32,11 @@ int main(int argc, char* argv[])
                 return -1;
         }
 
-        long null_bytes = 0, data_bytes = 0, source_logical_size = 0, source_physical_size = 0, buffer_size = 0, read_result, write_result,  hole_ptr = 0, data_ptr = 0, prev_hole_ptr = 0, offset = 0, lseek_result = 0;
+        long null_bytes = 0, data_bytes = 0, source_logical_size = 0, source_physical_size = 0, buffer_size = 0, read_result, write_result,  hole_ptr = 0, data_ptr = 0, offset = 0, lseek_result = 0;
         char* buffer;
 
         while(true)
         {
-                prev_hole_ptr = hole_ptr;
-
                 // find a hole
                 data_ptr = lseek(source, offset, SEEK_HOLE);
 
@@ -90,13 +88,6 @@ int main(int argc, char* argv[])
                 // adjust offset
                 offset = hole_ptr;
 
-                if(hole_ptr == prev_hole_ptr)
-                {
-                        data_bytes -= buffer_size;
-
-                        break;
-                }
-
                 // write buffer
                 write_result = write(destination, buffer, buffer_size);
 
@@ -140,7 +131,11 @@ int main(int argc, char* argv[])
 
                 data_bytes += write_result;
         }
-
+        
+        // close files
+        close(destination);
+        close(source;
+        
         // print
         std::cout << "\nSource file\nlogical size: " << source_logical_size / 1000 << "KB\nphysical size: " << (source_logical_size + source_physical_size) / 1000 << "KB\n\n";
 
