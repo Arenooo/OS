@@ -55,7 +55,6 @@ int main(int argc, char* argv[])
                 // read buffer
                 read_result = read(source, buffer, buffer_size);
 
-                std::cout << "read result: " << read_result << '\n';
                 // check if could read
                 if(read_result == -1)
                 {
