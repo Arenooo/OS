@@ -71,19 +71,11 @@ int main(int argc, char* argv[])
                         if(errno == ENXIO)
                         {
                                 hole_ptr = lseek(source, 0, SEEK_END);
-                                
-                                //put last holes and check if no error
-                                if(lseek(destination, hole_ptr - data_ptr, SEEK_END) < 0)
-                                {
-                                        std::cerr << "Something went wrong\n";
-                                        
-                                        return errno;
-                                }
-                                
+
                                 source_physical_size += hole_ptr - data_ptr;
 
                                 break;
-                        }                        
+                        }                       
                         else
                         {
                                 std::cerr << "Something went wrong\n";
@@ -139,12 +131,14 @@ int main(int argc, char* argv[])
                 }
 
                 data_bytes += write_result;
+
+                std::cout << "Last lseek " << lseek(destination, hole_ptr - data_ptr, SEEK_END) << '\n';
         }
-        
+
         // close files
+        close(source);
         close(destination);
-        close(source;
-        
+
         // print
         std::cout << "\nSource file\nlogical size: " << source_logical_size / 1000 << "KB\nphysical size: " << (source_logical_size + source_physical_size) / 1000 << "KB\n\n";
 
