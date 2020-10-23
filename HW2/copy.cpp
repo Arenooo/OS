@@ -131,8 +131,14 @@ int main(int argc, char* argv[])
                 }
 
                 data_bytes += write_result;
-
-                std::cout << "Last lseek " << lseek(destination, hole_ptr - data_ptr, SEEK_END) << '\n';
+                
+                // add last holes and check for error
+                if(lseek(destination, hole_ptr - data_ptr, SEEK_END) < 0)
+                {
+                        std::cerr << "Something went wrong\n";
+                        
+                        return errno;
+                }
         }
 
         // close files
