@@ -71,11 +71,20 @@ int main(int argc, char* argv[])
                         if(errno == ENXIO)
                         {
                                 hole_ptr = lseek(source, 0, SEEK_END);
-
+                                
+                                //put last holes and check if no error
+                                if(lseek(destination, hole_ptr - data_ptr, SEEK_END) < 0)
+                                {
+                                        std::cerr << "Something went wrong\n";
+                                        
+                                        return errno;
+                                }
+                                
                                 source_physical_size += hole_ptr - data_ptr;
 
                                 break;
-                        }                        else
+                        }                        
+                        else
                         {
                                 std::cerr << "Something went wrong\n";
 
